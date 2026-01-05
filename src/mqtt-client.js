@@ -10,29 +10,34 @@ class MqttClient {
 
   connect() {
     return new Promise((resolve, reject) => {
-      // Remove existing listeners if reconnecting
       if (this.client) {
         this.client.removeAllListeners();
       }
 
       this.client = mqtt.connect(this.brokerUrl);
+      let connectionResolved = false;
 
-      // One-time listeners for connection result
       this.client.once('connect', () => {
+        connectionResolved = true;
         this.connected = true;
         resolve();
       });
 
+      // Handle errors during connection phase
       this.client.once('error', (err) => {
-        reject(err);
+        if (!connectionResolved) {
+          connectionResolved = true;
+          reject(err);
+        }
       });
 
-      // Persistent error handler for runtime errors
+      // Persistent error handler for runtime errors (after connection)
       this.client.on('error', (err) => {
-        console.error('MQTT client error:', err);
+        if (connectionResolved) {
+          console.error('MQTT runtime error:', err);
+        }
       });
 
-      // Persistent disconnect handlers
       this.client.on('close', () => {
         this.connected = false;
       });
@@ -41,7 +46,6 @@ class MqttClient {
         this.connected = false;
       });
 
-      // Persistent message handler with error protection
       this.client.on('message', (topic, message) => {
         this.messageHandlers.forEach(handler => {
           try {
