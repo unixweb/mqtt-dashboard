@@ -23,12 +23,27 @@ npm install
 
 ## Konfiguration
 
-Standardmäßig verbindet sich das Dashboard mit `mqtt://localhost:1883`.
+### Umgebungsvariablen
+
+Kopieren Sie `.env.example` zu `.env` und passen Sie die Werte an:
+
+```bash
+cp .env.example .env
+```
+
+Verfügbare Umgebungsvariablen:
+- `MQTT_BROKER`: MQTT Broker Hostname (Standard: localhost)
+- `MQTT_BROKER_PORT`: MQTT Broker Port (Standard: 1883)
+- `PORT`: HTTP Server Port (Standard: 3000)
+
+**Hinweis:** Die `.env` Datei wird nicht zu Git committed und ist nur für lokale Entwicklung.
+
+### Alternative: Umgebungsvariablen direkt setzen
 
 Um einen anderen Broker zu verwenden:
 
 ```bash
-MQTT_BROKER=mqtt://andere-adresse:1883 npm start
+MQTT_BROKER=andere-adresse MQTT_BROKER_PORT=1883 npm start
 ```
 
 Um einen anderen Port zu verwenden:

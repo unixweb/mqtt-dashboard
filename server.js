@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const { WebSocketServer, WebSocket } = require('ws');
 const path = require('path');
@@ -5,7 +7,9 @@ const MqttClient = require('./src/mqtt-client');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const MQTT_BROKER = process.env.MQTT_BROKER || 'mqtt://localhost:1883';
+const MQTT_BROKER_HOST = process.env.MQTT_BROKER || 'localhost';
+const MQTT_BROKER_PORT = process.env.MQTT_BROKER_PORT || '1883';
+const MQTT_BROKER = `mqtt://${MQTT_BROKER_HOST}:${MQTT_BROKER_PORT}`;
 
 // Serve static files
 app.use(express.static('public'));
