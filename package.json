@@ -1,0 +1,22 @@
+{
+  "name": "mqtt-dashboard",
+  "version": "1.0.0",
+  "description": "MQTT Dashboard for monitoring and publishing to MQTT broker",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "jest"
+  },
+  "keywords": ["mqtt", "dashboard", "monitoring"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mqtt": "^5.3.4",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
