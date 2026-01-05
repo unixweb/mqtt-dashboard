@@ -23,6 +23,12 @@ class MqttDashboard {
   }
 
   initWebSocket() {
+    // Close existing connection if any
+    if (this.ws) {
+      this.ws.onclose = null; // Remove handler to prevent recursive reconnect
+      this.ws.close();
+    }
+
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const wsUrl = `${protocol}//${window.location.host}`;
 
@@ -46,8 +52,13 @@ class MqttDashboard {
     };
 
     this.ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      this.handleMessage(data);
+      try {
+        const data = JSON.parse(event.data);
+        this.handleMessage(data);
+      } catch (err) {
+        console.error('Failed to parse WebSocket message:', err);
+        this.showNotification('Ungültige Nachricht empfangen', 'error');
+      }
     };
   }
 
