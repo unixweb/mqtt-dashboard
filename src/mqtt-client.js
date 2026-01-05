@@ -10,20 +10,45 @@ class MqttClient {
 
   connect() {
     return new Promise((resolve, reject) => {
+      // Remove existing listeners if reconnecting
+      if (this.client) {
+        this.client.removeAllListeners();
+      }
+
       this.client = mqtt.connect(this.brokerUrl);
 
-      this.client.on('connect', () => {
+      // One-time listeners for connection result
+      this.client.once('connect', () => {
         this.connected = true;
         resolve();
       });
 
-      this.client.on('error', (err) => {
+      this.client.once('error', (err) => {
         reject(err);
       });
 
+      // Persistent error handler for runtime errors
+      this.client.on('error', (err) => {
+        console.error('MQTT client error:', err);
+      });
+
+      // Persistent disconnect handlers
+      this.client.on('close', () => {
+        this.connected = false;
+      });
+
+      this.client.on('offline', () => {
+        this.connected = false;
+      });
+
+      // Persistent message handler with error protection
       this.client.on('message', (topic, message) => {
         this.messageHandlers.forEach(handler => {
-          handler(topic, message.toString());
+          try {
+            handler(topic, message.toString());
+          } catch (err) {
+            console.error('Error in message handler:', err);
+          }
         });
       });
     });
