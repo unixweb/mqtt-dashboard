@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQTT Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MQTT Dashboard</h1>
+            <div class="connection-status">
+                <span class="status-indicator" id="statusIndicator"></span>
+                <span id="statusText">Verbindung wird hergestellt...</span>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Subscribe Section -->
+            <section class="card">
+                <h2>Topics abonnieren</h2>
+                <div class="input-group">
+                    <input
+                        type="text"
+                        id="subscribeInput"
+                        placeholder="z.B. sensors/# oder home/temperature"
+                        value="#"
+                    >
+                    <button id="subscribeBtn">Abonnieren</button>
+                </div>
+                <div class="subscribed-topics">
+                    <h3>Abonnierte Topics:</h3>
+                    <ul id="topicList"></ul>
+                </div>
+            </section>
+
+            <!-- Publish Section -->
+            <section class="card">
+                <h2>Nachricht veröffentlichen</h2>
+                <div class="input-group">
+                    <input
+                        type="text"
+                        id="publishTopic"
+                        placeholder="Topic"
+                    >
+                </div>
+                <div class="input-group">
+                    <textarea
+                        id="publishMessage"
+                        placeholder="Nachricht"
+                        rows="3"
+                    ></textarea>
+                </div>
+                <button id="publishBtn">Veröffentlichen</button>
+            </section>
+
+            <!-- Messages Section -->
+            <section class="card messages-card">
+                <div class="messages-header">
+                    <h2>Empfangene Nachrichten</h2>
+                    <button id="clearBtn">Löschen</button>
+                </div>
+                <div id="messages" class="messages-container"></div>
+            </section>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
