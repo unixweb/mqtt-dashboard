@@ -1,5 +1,5 @@
 const express = require('express');
-const { WebSocketServer } = require('ws');
+const { WebSocketServer, WebSocket } = require('ws');
 const path = require('path');
 const MqttClient = require('./src/mqtt-client');
 
@@ -25,14 +25,17 @@ const mqttClient = new MqttClient(MQTT_BROKER);
 
 // Store subscribed topics
 const subscribedTopics = new Set();
+let mqttReady = false;
 
 // Connect to MQTT broker
 mqttClient.connect()
   .then(() => {
     console.log('Connected to MQTT broker');
+    mqttReady = true;
   })
   .catch((err) => {
     console.error('Failed to connect to MQTT broker:', err);
+    console.error('Server will run but MQTT operations will fail');
   });
 
 // Handle MQTT messages
@@ -46,7 +49,7 @@ mqttClient.onMessage((topic, message) => {
 
   // Broadcast to all WebSocket clients
   wss.clients.forEach((client) => {
-    if (client.readyState === 1) { // OPEN
+    if (client.readyState === WebSocket.OPEN) {
       client.send(JSON.stringify(data));
     }
   });
@@ -67,10 +70,13 @@ wss.on('connection', (ws) => {
       const message = JSON.parse(data.toString());
 
       if (message.type === 'subscribe') {
+        if (!mqttReady) {
+          throw new Error('MQTT client not ready');
+        }
         await mqttClient.subscribe(message.topic);
         subscribedTopics.add(message.topic);
         wss.clients.forEach((client) => {
-          if (client.readyState === 1) {
+          if (client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify({
               type: 'subscribed',
               topic: message.topic
@@ -78,6 +84,9 @@ wss.on('connection', (ws) => {
           }
         });
       } else if (message.type === 'publish') {
+        if (!mqttReady) {
+          throw new Error('MQTT client not ready');
+        }
         await mqttClient.publish(message.topic, message.message);
         ws.send(JSON.stringify({
           type: 'published',
