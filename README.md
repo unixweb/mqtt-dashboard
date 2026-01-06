@@ -4,14 +4,14 @@ Web-basiertes Dashboard zur Überwachung und Interaktion mit einem MQTT-Broker.
 
 ## Features
 
-- 🔌 Real-time MQTT messaging via WebSocket
-- 📊 Subscribe to multiple topics with wildcard support
-- 📤 Publish messages to any topic
-- 🗑️ Unsubscribe from topics dynamically
-- 📈 Monitor tab for viewing $SYS/# system metrics
-- 💬 Live message feed with timestamps
-- 🎨 Clean, responsive UI
-- ⚙️ Environment-based configuration
+- 🔌 Echtzeit-MQTT-Messaging über WebSocket
+- 📊 Abonnieren mehrerer Topics mit Wildcard-Unterstützung
+- 📤 Veröffentlichen von Nachrichten auf beliebigen Topics
+- 🗑️ Dynamisches Abmelden von Topics
+- 📈 Monitor-Tab zur Anzeige von $SYS/#-Systemmetriken
+- 💬 Live-Nachrichten-Feed mit Zeitstempeln
+- 🎨 Übersichtliche, responsive Benutzeroberfläche
+- ⚙️ Umgebungsbasierte Konfiguration
 
 ## Voraussetzungen
 
@@ -96,37 +96,37 @@ sudo systemctl start mosquitto
 
 ## Verwendung
 
-### Subscribing to Topics
+### Topics abonnieren
 
-1. Enter a topic pattern in the subscribe field (e.g., `sensors/#`, `home/+/temperature`)
-2. Click **Abonnieren** (Subscribe)
-3. The topic appears in your subscribed topics list
-4. Click **Löschen** (Delete) next to any topic to unsubscribe
+1. Geben Sie ein Topic-Muster in das Abonnieren-Feld ein (z.B. `sensors/#`, `home/+/temperature`)
+2. Klicken Sie auf **Abonnieren**
+3. Das Topic erscheint in der Liste der abonnierten Topics
+4. Klicken Sie auf **Löschen** neben einem Topic, um es abzumelden
 
-### Publishing Messages
+### Nachrichten veröffentlichen
 
-1. Enter the topic in the publish field
-2. Enter your message
-3. Click **Veröffentlichen** (Publish)
+1. Geben Sie das Topic im Veröffentlichen-Feld ein
+2. Geben Sie Ihre Nachricht ein
+3. Klicken Sie auf **Veröffentlichen**
 
-### Receiving Messages
+### Nachrichten empfangen
 
-Subscribed messages appear automatically in the messages section with timestamps.
+Abonnierte Nachrichten erscheinen automatisch im Nachrichten-Bereich mit Zeitstempeln.
 
-## Monitor Tab
+## Monitor-Tab
 
-The Monitor tab provides real-time visibility into MQTT broker system metrics:
+Der Monitor-Tab bietet Echtzeit-Einblick in MQTT-Broker-Systemmetriken:
 
-1. Click the **Monitor** tab in the dashboard
-2. The system automatically subscribes to `$SYS/#` topics
-3. View broker statistics including:
-   - Broker version and uptime
-   - Connected clients
-   - Message rates and counts
-   - Subscription statistics
-4. Switch back to Dashboard tab to resume normal operations
+1. Klicken Sie auf den **Monitor**-Tab im Dashboard
+2. Das System abonniert automatisch `$SYS/#`-Topics
+3. Sehen Sie Broker-Statistiken einschließlich:
+   - Broker-Version und Betriebszeit
+   - Verbundene Clients
+   - Nachrichten-Raten und -Anzahl
+   - Abonnement-Statistiken
+4. Wechseln Sie zurück zum Dashboard-Tab für normale Operationen
 
-**Note:** The `$SYS/#` subscription is automatically managed - it activates when you open the Monitor tab and deactivates when you switch away.
+**Hinweis:** Das `$SYS/#`-Abonnement wird automatisch verwaltet - es aktiviert sich beim Öffnen des Monitor-Tabs und deaktiviert sich beim Wegwechseln.
 
 ## Architektur
 
