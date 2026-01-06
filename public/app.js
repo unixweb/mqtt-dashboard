@@ -149,6 +149,16 @@ class MqttDashboard {
     this.updateMonitorDisplay();
   }
 
+  updateStatCards() {
+    const active = this.monitorData.get('$SYS/broker/clients/active');
+    const connected = this.monitorData.get('$SYS/broker/clients/connected');
+    const total = this.monitorData.get('$SYS/broker/clients/total');
+
+    this.statActive.textContent = active ? active.message : '-';
+    this.statConnected.textContent = connected ? connected.message : '-';
+    this.statTotal.textContent = total ? total.message : '-';
+  }
+
   updateMonitorDisplay() {
     this.monitorMessages.innerHTML = '';
 
