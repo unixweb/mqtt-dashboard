@@ -200,6 +200,33 @@ class MqttDashboard {
     };
   }
 
+  updateLoadCards() {
+    // Null-Safety Check
+    if (!this.statLoad1min || !this.statLoad5min || !this.statLoad15min) {
+      return;
+    }
+
+    // Daten aus monitorData Map extrahieren
+    const load1min = this.monitorData.get('$SYS/broker/load/bytes/received/1min');
+    const load5min = this.monitorData.get('$SYS/broker/load/bytes/received/5min');
+    const load15min = this.monitorData.get('$SYS/broker/load/bytes/received/15min');
+
+    // Bytes formatieren
+    const formatted1min = this.formatBytes(load1min ? load1min.message : '-');
+    const formatted5min = this.formatBytes(load5min ? load5min.message : '-');
+    const formatted15min = this.formatBytes(load15min ? load15min.message : '-');
+
+    // DOM aktualisieren - formatierte Werte
+    this.statLoad1min.textContent = formatted1min.formatted;
+    this.statLoad5min.textContent = formatted5min.formatted;
+    this.statLoad15min.textContent = formatted15min.formatted;
+
+    // DOM aktualisieren - Rohwerte
+    this.statLoad1minRaw.textContent = formatted1min.raw;
+    this.statLoad5minRaw.textContent = formatted5min.raw;
+    this.statLoad15minRaw.textContent = formatted15min.raw;
+  }
+
   updateMonitorDisplay() {
     // Statistik-Karten zuerst aktualisieren
     this.updateStatCards();
