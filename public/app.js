@@ -336,8 +336,19 @@ class MqttDashboard {
   }
 
   showNotification(message, type) {
-    // Simple console notification for now
-    console.log(`[${type}] ${message}`);
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+      notification.style.animation = 'slideOut 0.3s ease-out';
+      setTimeout(() => {
+        document.body.removeChild(notification);
+      }, 300);
+    }, 3000);
   }
 
   escapeHtml(text) {
