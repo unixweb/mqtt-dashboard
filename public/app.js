@@ -150,6 +150,10 @@ class MqttDashboard {
   }
 
   updateStatCards() {
+    if (!this.statActive || !this.statConnected || !this.statTotal) {
+      return;
+    }
+
     const active = this.monitorData.get('$SYS/broker/clients/active');
     const connected = this.monitorData.get('$SYS/broker/clients/connected');
     const total = this.monitorData.get('$SYS/broker/clients/total');
@@ -160,7 +164,7 @@ class MqttDashboard {
   }
 
   updateMonitorDisplay() {
-    // Update stat cards first
+    // Statistik-Karten zuerst aktualisieren
     this.updateStatCards();
 
     this.monitorMessages.innerHTML = '';

@@ -416,4 +416,12 @@ button:active {
         flex-direction: column;
         gap: 15px;
     }
+
+    .monitor-stats {
+        flex-direction: column;
+    }
+
+    .stat-card {
+        width: 100%;
+    }
 }
