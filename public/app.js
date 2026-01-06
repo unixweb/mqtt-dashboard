@@ -29,6 +29,11 @@ class MqttDashboard {
     this.tabContents = document.querySelectorAll('.tab-content');
     this.monitorMessages = document.getElementById('monitorMessages');
     this.monitorStatus = document.getElementById('monitorStatus');
+
+    // Statistik-Karten
+    this.statActive = document.getElementById('stat-active');
+    this.statConnected = document.getElementById('stat-connected');
+    this.statTotal = document.getElementById('stat-total');
   }
 
   initWebSocket() {
