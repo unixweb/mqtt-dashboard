@@ -160,6 +160,9 @@ class MqttDashboard {
   }
 
   updateMonitorDisplay() {
+    // Update stat cards first
+    this.updateStatCards();
+
     this.monitorMessages.innerHTML = '';
 
     if (this.monitorData.size === 0) {
