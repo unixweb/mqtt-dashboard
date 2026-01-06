@@ -5,6 +5,7 @@ class MqttDashboard {
     this.subscribedTopics = new Set();
     this.currentTab = 'dashboard';
     this.monitorActive = false;
+    this.monitorData = new Map();
 
     this.initElements();
     this.initWebSocket();
@@ -83,7 +84,12 @@ class MqttDashboard {
   handleMessage(data) {
     switch (data.type) {
       case 'message':
-        this.addMessage(data);
+        // Route $SYS messages to monitor
+        if (data.topic.startsWith('$SYS/') && this.monitorActive) {
+          this.addMonitorMessage(data);
+        } else {
+          this.addMessage(data);
+        }
         break;
       case 'subscriptions':
         data.topics.forEach(topic => this.subscribedTopics.add(topic));
@@ -126,6 +132,46 @@ class MqttDashboard {
       this.messages.pop();
       this.messagesContainer.removeChild(this.messagesContainer.lastChild);
     }
+  }
+
+  addMonitorMessage(data) {
+    // Store latest value for each topic
+    this.monitorData.set(data.topic, {
+      message: data.message,
+      timestamp: data.timestamp
+    });
+
+    this.updateMonitorDisplay();
+  }
+
+  updateMonitorDisplay() {
+    this.monitorMessages.innerHTML = '';
+
+    if (this.monitorData.size === 0) {
+      this.monitorMessages.innerHTML = '<div style="color: #999; text-align: center; padding: 20px;">Warte auf System-Metriken...</div>';
+      return;
+    }
+
+    // Sort by topic name
+    const sortedTopics = Array.from(this.monitorData.keys()).sort();
+
+    sortedTopics.forEach(topic => {
+      const data = this.monitorData.get(topic);
+      const messageEl = document.createElement('div');
+      messageEl.className = 'monitor-item';
+
+      const topicEl = document.createElement('div');
+      topicEl.className = 'monitor-topic';
+      topicEl.textContent = topic;
+
+      const valueEl = document.createElement('div');
+      valueEl.className = 'monitor-value';
+      valueEl.textContent = data.message;
+
+      messageEl.appendChild(topicEl);
+      messageEl.appendChild(valueEl);
+      this.monitorMessages.appendChild(messageEl);
+    });
   }
 
   updateTopicList() {
@@ -201,6 +247,10 @@ class MqttDashboard {
     this.monitorActive = false;
     this.monitorStatus.textContent = 'Inaktiv';
     this.monitorStatus.classList.remove('active');
+
+    // Clear monitor data
+    this.monitorData.clear();
+    this.monitorMessages.innerHTML = '';
 
     // Unsubscribe from $SYS/# topic
     if (this.ws.readyState === WebSocket.OPEN) {
