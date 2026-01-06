@@ -34,6 +34,14 @@ class MqttDashboard {
     this.statActive = document.getElementById('stat-active');
     this.statConnected = document.getElementById('stat-connected');
     this.statTotal = document.getElementById('stat-total');
+
+    // Load-Karten
+    this.statLoad1min = document.getElementById('stat-load-1min');
+    this.statLoad1minRaw = document.getElementById('stat-load-1min-raw');
+    this.statLoad5min = document.getElementById('stat-load-5min');
+    this.statLoad5minRaw = document.getElementById('stat-load-5min-raw');
+    this.statLoad15min = document.getElementById('stat-load-15min');
+    this.statLoad15minRaw = document.getElementById('stat-load-15min-raw');
   }
 
   initWebSocket() {
