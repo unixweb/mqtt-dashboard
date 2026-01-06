@@ -3,6 +3,8 @@ class MqttDashboard {
     this.ws = null;
     this.messages = [];
     this.subscribedTopics = new Set();
+    this.currentTab = 'dashboard';
+    this.monitorActive = false;
 
     this.initElements();
     this.initWebSocket();
@@ -20,6 +22,12 @@ class MqttDashboard {
     this.messagesContainer = document.getElementById('messages');
     this.topicList = document.getElementById('topicList');
     this.clearBtn = document.getElementById('clearBtn');
+
+    // Tab elements
+    this.tabBtns = document.querySelectorAll('.tab-btn');
+    this.tabContents = document.querySelectorAll('.tab-content');
+    this.monitorMessages = document.getElementById('monitorMessages');
+    this.monitorStatus = document.getElementById('monitorStatus');
   }
 
   initWebSocket() {
@@ -146,6 +154,63 @@ class MqttDashboard {
     });
   }
 
+  switchTab(tabName) {
+    this.currentTab = tabName;
+
+    // Update tab buttons
+    this.tabBtns.forEach(btn => {
+      if (btn.dataset.tab === tabName) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // Update tab content
+    this.tabContents.forEach(content => {
+      if (content.id === `${tabName}-tab`) {
+        content.classList.add('active');
+      } else {
+        content.classList.remove('active');
+      }
+    });
+
+    // Handle monitor tab activation
+    if (tabName === 'monitor' && !this.monitorActive) {
+      this.activateMonitor();
+    } else if (tabName !== 'monitor' && this.monitorActive) {
+      this.deactivateMonitor();
+    }
+  }
+
+  activateMonitor() {
+    this.monitorActive = true;
+    this.monitorStatus.textContent = 'Aktiv';
+    this.monitorStatus.classList.add('active');
+
+    // Subscribe to $SYS/# topic
+    if (this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({
+        type: 'subscribe',
+        topic: '$SYS/#'
+      }));
+    }
+  }
+
+  deactivateMonitor() {
+    this.monitorActive = false;
+    this.monitorStatus.textContent = 'Inaktiv';
+    this.monitorStatus.classList.remove('active');
+
+    // Unsubscribe from $SYS/# topic
+    if (this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({
+        type: 'unsubscribe',
+        topic: '$SYS/#'
+      }));
+    }
+  }
+
   attachEventListeners() {
     this.subscribeBtn.addEventListener('click', () => this.subscribe());
     this.subscribeInput.addEventListener('keypress', (e) => {
@@ -158,6 +223,10 @@ class MqttDashboard {
     });
 
     this.clearBtn.addEventListener('click', () => this.clearMessages());
+
+    this.tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => this.switchTab(btn.dataset.tab));
+    });
   }
 
   subscribe() {
