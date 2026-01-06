@@ -70,6 +70,18 @@ class MqttClient {
     });
   }
 
+  unsubscribe(topic) {
+    if (!this.connected) {
+      throw new Error('Client not connected');
+    }
+    return new Promise((resolve, reject) => {
+      this.client.unsubscribe(topic, (err) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
+  }
+
   publish(topic, message) {
     if (!this.connected) {
       throw new Error('Client not connected');
