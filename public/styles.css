@@ -315,6 +315,31 @@ button:active {
     text-align: right;
 }
 
+/* Statistik-Sektionen */
+.stats-section {
+    margin-bottom: 20px;
+}
+
+.stats-header {
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px 6px 0 0;
+    margin-bottom: 10px;
+}
+
+.client-header {
+    background: #f3f4f6;
+    color: #374151;
+    border-left: 4px solid #667eea;
+}
+
+.load-header {
+    background: #eff6ff;
+    color: #1e40af;
+    border-left: 4px solid #3b82f6;
+}
+
 /* Statistik-Karten Container */
 .stats-cards {
     display: flex;
@@ -358,6 +383,24 @@ button:active {
     font-size: 12px;
     color: #666;
     margin-top: 2px;
+}
+
+/* Load-Karten (blaues Farbschema) */
+.load-card {
+    background: #f0f9ff;
+    border: 2px solid #bfdbfe;
+}
+
+.load-card:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+.stat-subvalue {
+    font-size: 10px;
+    color: #6b7280;
+    margin-top: 2px;
+    font-style: italic;
 }
 
 .notification {
