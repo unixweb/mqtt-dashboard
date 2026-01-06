@@ -96,6 +96,20 @@ wss.on('connection', (ws) => {
           type: 'published',
           topic: message.topic
         }));
+      } else if (message.type === 'unsubscribe') {
+        if (!mqttReady) {
+          throw new Error('MQTT client not ready');
+        }
+        await mqttClient.unsubscribe(message.topic);
+        subscribedTopics.delete(message.topic);
+        wss.clients.forEach((client) => {
+          if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify({
+              type: 'unsubscribed',
+              topic: message.topic
+            }));
+          }
+        });
       }
     } catch (err) {
       console.error('WebSocket message error:', err);
@@ -119,3 +133,6 @@ process.on('SIGINT', () => {
     process.exit(0);
   });
 });
+
+// Export for testing
+module.exports = server;
