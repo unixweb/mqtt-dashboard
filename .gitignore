@@ -6,3 +6,4 @@ node_modules/
 # Git worktrees
 .worktrees/
 */.worktrees/
+../.worktrees/
