@@ -163,6 +163,35 @@ class MqttDashboard {
     this.statTotal.textContent = total ? total.message : '-';
   }
 
+  formatBytes(bytes) {
+    // Fallback für fehlende oder ungültige Daten
+    if (!bytes || bytes === '-' || bytes === '') {
+      return { formatted: '-', raw: '-' };
+    }
+
+    // String zu Number konvertieren und validieren
+    const num = parseFloat(bytes);
+    if (isNaN(num) || num < 0) {
+      return { formatted: '-', raw: '-' };
+    }
+
+    // Byte-Einheiten
+    const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    let unitIndex = 0;
+    let value = num;
+
+    // In größere Einheit konvertieren bis < 1024
+    while (value >= 1024 && unitIndex < units.length - 1) {
+      value /= 1024;
+      unitIndex++;
+    }
+
+    return {
+      formatted: `${value.toFixed(2)} ${units[unitIndex]}`,
+      raw: `(${num.toLocaleString('de-DE')} bytes)`
+    };
+  }
+
   updateMonitorDisplay() {
     // Statistik-Karten zuerst aktualisieren
     this.updateStatCards();
