@@ -64,10 +64,56 @@ h1 {
     font-size: 14px;
 }
 
-.main-content {
+.tabs {
+    background: white;
+    padding: 10px 20px;
+    border-radius: 10px 10px 0 0;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 10px;
+}
+
+.tab-btn {
+    width: auto;
+    padding: 10px 20px;
+    background: transparent;
+    color: #666;
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.tab-btn:hover {
+    background: #f3f4f6;
+    color: #333;
+}
+
+.tab-btn.active {
+    color: #667eea;
+    border-bottom-color: #667eea;
+    background: transparent;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
+}
+
+.main-content {
+    background: white;
+    padding: 20px;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .card {
@@ -214,6 +260,59 @@ button:active {
 
 .unsubscribe-btn:hover {
     background: #dc2626;
+}
+
+.monitor-card {
+    grid-column: 1 / -1;
+}
+
+.monitor-status {
+    margin-bottom: 15px;
+    padding: 10px;
+    background: #f3f4f6;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 600;
+}
+
+#monitorStatus {
+    color: #666;
+}
+
+#monitorStatus.active {
+    color: #10b981;
+}
+
+.monitor-container {
+    max-height: 600px;
+    overflow-y: auto;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.monitor-item {
+    padding: 10px;
+    background: #f9fafb;
+    border-left: 4px solid #10b981;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+}
+
+.monitor-topic {
+    font-family: monospace;
+    font-size: 12px;
+    color: #10b981;
+    word-break: break-all;
+}
+
+.monitor-value {
+    font-weight: 600;
+    color: #333;
+    text-align: right;
 }
 
 @media (max-width: 768px) {
