@@ -86,6 +86,11 @@ class MqttDashboard {
         this.updateTopicList();
         this.showNotification(`Abonniert: ${data.topic}`, 'success');
         break;
+      case 'unsubscribed':
+        this.subscribedTopics.delete(data.topic);
+        this.updateTopicList();
+        this.showNotification(`Abgemeldet: ${data.topic}`, 'success');
+        break;
       case 'published':
         this.showNotification(`Veröffentlicht auf: ${data.topic}`, 'success');
         break;
@@ -125,7 +130,18 @@ class MqttDashboard {
 
     this.subscribedTopics.forEach(topic => {
       const li = document.createElement('li');
-      li.textContent = topic;
+
+      const topicText = document.createElement('span');
+      topicText.className = 'topic-text';
+      topicText.textContent = topic;
+
+      const unsubBtn = document.createElement('button');
+      unsubBtn.className = 'unsubscribe-btn';
+      unsubBtn.textContent = 'Löschen';
+      unsubBtn.onclick = () => this.unsubscribe(topic);
+
+      li.appendChild(topicText);
+      li.appendChild(unsubBtn);
       this.topicList.appendChild(li);
     });
   }
@@ -158,6 +174,17 @@ class MqttDashboard {
         topic
       }));
       this.subscribeInput.value = '';
+    } else {
+      this.showNotification('Nicht verbunden', 'error');
+    }
+  }
+
+  unsubscribe(topic) {
+    if (this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({
+        type: 'unsubscribe',
+        topic
+      }));
     } else {
       this.showNotification('Nicht verbunden', 'error');
     }

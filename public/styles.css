@@ -195,6 +195,25 @@ button:active {
     margin-bottom: 5px;
     border-radius: 4px;
     color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.topic-text {
+    flex: 1;
+}
+
+.unsubscribe-btn {
+    width: auto;
+    padding: 4px 12px;
+    background: #ef4444;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.unsubscribe-btn:hover {
+    background: #dc2626;
 }
 
 @media (max-width: 768px) {
