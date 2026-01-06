@@ -315,11 +315,10 @@ button:active {
     text-align: right;
 }
 
-/* Client-Statistik-Karten */
-.monitor-stats {
+/* Statistik-Karten Container */
+.stats-cards {
     display: flex;
     gap: 15px;
-    margin-bottom: 20px;
 }
 
 .stat-card {
@@ -417,7 +416,7 @@ button:active {
         gap: 15px;
     }
 
-    .monitor-stats {
+    .stats-cards {
         flex-direction: column;
     }
 
