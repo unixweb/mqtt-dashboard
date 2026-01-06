@@ -4,11 +4,14 @@ Web-basiertes Dashboard zur Überwachung und Interaktion mit einem MQTT-Broker.
 
 ## Features
 
-- Echtzeit-Anzeige von MQTT-Nachrichten
-- Topic-Abonnement mit Wildcard-Unterstützung (#, +)
-- Nachrichtenveröffentlichung auf beliebige Topics
-- WebSocket-basierte Live-Updates
-- Responsive Design
+- 🔌 Real-time MQTT messaging via WebSocket
+- 📊 Subscribe to multiple topics with wildcard support
+- 📤 Publish messages to any topic
+- 🗑️ Unsubscribe from topics dynamically
+- 📈 Monitor tab for viewing $SYS/# system metrics
+- 💬 Live message feed with timestamps
+- 🎨 Clean, responsive UI
+- ⚙️ Environment-based configuration
 
 ## Voraussetzungen
 
@@ -93,9 +96,37 @@ sudo systemctl start mosquitto
 
 ## Verwendung
 
-1. **Topics abonnieren**: Geben Sie ein Topic ein (z.B. `sensors/#` für alle Sensor-Topics oder `#` für alle Topics)
-2. **Nachrichten empfangen**: Abonnierte Nachrichten erscheinen automatisch im Nachrichten-Bereich
-3. **Nachrichten veröffentlichen**: Topic und Nachricht eingeben und auf "Veröffentlichen" klicken
+### Subscribing to Topics
+
+1. Enter a topic pattern in the subscribe field (e.g., `sensors/#`, `home/+/temperature`)
+2. Click **Abonnieren** (Subscribe)
+3. The topic appears in your subscribed topics list
+4. Click **Löschen** (Delete) next to any topic to unsubscribe
+
+### Publishing Messages
+
+1. Enter the topic in the publish field
+2. Enter your message
+3. Click **Veröffentlichen** (Publish)
+
+### Receiving Messages
+
+Subscribed messages appear automatically in the messages section with timestamps.
+
+## Monitor Tab
+
+The Monitor tab provides real-time visibility into MQTT broker system metrics:
+
+1. Click the **Monitor** tab in the dashboard
+2. The system automatically subscribes to `$SYS/#` topics
+3. View broker statistics including:
+   - Broker version and uptime
+   - Connected clients
+   - Message rates and counts
+   - Subscription statistics
+4. Switch back to Dashboard tab to resume normal operations
+
+**Note:** The `$SYS/#` subscription is automatically managed - it activates when you open the Monitor tab and deactivates when you switch away.
 
 ## Architektur
 
