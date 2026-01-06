@@ -230,6 +230,7 @@ class MqttDashboard {
   updateMonitorDisplay() {
     // Statistik-Karten zuerst aktualisieren
     this.updateStatCards();
+    this.updateLoadCards();
 
     this.monitorMessages.innerHTML = '';
 
