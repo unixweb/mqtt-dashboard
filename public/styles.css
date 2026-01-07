@@ -450,13 +450,27 @@ button:active {
 }
 
 @media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .tab-content.active {
+        grid-template-columns: 1fr;
+    }
+
     .main-content {
         grid-template-columns: 1fr;
+        padding: 15px;
     }
 
     header {
         flex-direction: column;
         gap: 15px;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 24px;
     }
 
     .stats-cards {
@@ -465,6 +479,53 @@ button:active {
 
     .stat-card {
         width: 100%;
+    }
+
+    .tabs {
+        padding: 10px 15px;
+    }
+
+    .notification {
+        right: 10px;
+        left: 10px;
+        top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 8px;
+    }
+
+    .main-content {
+        padding: 12px;
+    }
+
+    header {
+        padding: 12px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .tabs {
+        padding: 8px 12px;
+    }
+
+    .tab-btn {
+        padding: 8px 15px;
+        font-size: 13px;
+    }
+
+    input[type="text"],
+    textarea,
+    button {
+        font-size: 13px;
     }
 }
 
