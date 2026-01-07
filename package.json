@@ -1,6 +1,6 @@
 {
   "name": "mqtt-dashboard",
-  "version": "1.0.0",
+  "version": "1.0.10",
   "description": "MQTT Dashboard for monitoring and publishing to MQTT broker",
   "main": "server.js",
   "scripts": {
