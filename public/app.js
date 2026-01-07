@@ -130,11 +130,23 @@ class MqttDashboard {
   addMessage(data) {
     this.messages.unshift(data);
 
+    // Versuche JSON zu parsen
+    let messageDisplay;
+
+    try {
+      const parsed = JSON.parse(data.message);
+      // Valid JSON → formatiert anzeigen
+      messageDisplay = `<pre class="json-content">${this.escapeHtml(JSON.stringify(parsed, null, 2))}</pre>`;
+    } catch {
+      // Kein JSON → normaler Text
+      messageDisplay = `<div class="message-content">${this.escapeHtml(data.message)}</div>`;
+    }
+
     const messageEl = document.createElement('div');
     messageEl.className = 'message-item';
     messageEl.innerHTML = `
       <div class="message-topic">${this.escapeHtml(data.topic)}</div>
-      <div class="message-content">${this.escapeHtml(data.message)}</div>
+      ${messageDisplay}
       <div class="message-time">${new Date(data.timestamp).toLocaleString('de-DE')}</div>
     `;
 

@@ -467,3 +467,15 @@ button:active {
         width: 100%;
     }
 }
+
+.json-content {
+  background: #f5f5f5;
+  padding: 10px;
+  border-radius: 4px;
+  border-left: 3px solid #667eea;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  overflow-x: auto;
+  margin: 5px 0;
+  color: #333;
+}
