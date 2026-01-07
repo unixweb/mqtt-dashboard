@@ -2,6 +2,8 @@
 
 Web-basiertes Dashboard zur Überwachung und Interaktion mit einem MQTT-Broker.
 
+**Version:** 1.0.10 | [Changelog](CHANGELOG.md) | [Releases](https://github.com/unixweb/mqtt-dashboard/releases)
+
 ## Features
 
 - 🔌 Echtzeit-MQTT-Messaging über WebSocket
@@ -10,6 +12,7 @@ Web-basiertes Dashboard zur Überwachung und Interaktion mit einem MQTT-Broker.
 - 🗑️ Dynamisches Abmelden von Topics
 - 📈 Monitor-Tab zur Anzeige von $SYS/#-Systemmetriken
 - 💬 Live-Nachrichten-Feed mit Zeitstempeln
+- 📝 **Automatische JSON-Formatierung** - JSON-Nachrichten werden automatisch erkannt und formatiert angezeigt
 - 🎨 Übersichtliche, responsive Benutzeroberfläche
 - ⚙️ Umgebungsbasierte Konfiguration
 
