@@ -125,14 +125,54 @@ wss.on('connection', (ws) => {
   });
 });
 
-// Graceful shutdown
-process.on('SIGINT', () => {
-  console.log('Shutting down...');
-  mqttClient.disconnect();
-  server.close(() => {
+// Graceful Shutdown Handler
+let isShuttingDown = false;
+
+async function gracefulShutdown(signal) {
+  if (isShuttingDown) return; // Verhindere doppelte Ausführung
+  isShuttingDown = true;
+
+  console.log(`\n${signal} empfangen. Fahre sauber herunter...`);
+
+  // Timeout: Force-Exit nach 5 Sekunden
+  const forceExitTimeout = setTimeout(() => {
+    console.error('Shutdown dauert zu lange, erzwinge Beendigung');
+    process.exit(1);
+  }, 5000);
+
+  try {
+    // 1. Alle WebSocket-Verbindungen schließen
+    wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.close(1000, 'Server shutdown');
+      }
+    });
+    console.log('WebSocket Verbindungen geschlossen');
+
+    // 2. HTTP Server schließen (keine neuen Verbindungen)
+    await new Promise((resolve) => {
+      server.close(() => {
+        console.log('HTTP Server geschlossen');
+        resolve();
+      });
+    });
+
+    // 3. MQTT Client disconnect
+    await mqttClient.disconnect();
+    console.log('MQTT Client getrennt');
+
+    clearTimeout(forceExitTimeout);
+    console.log('Shutdown erfolgreich');
     process.exit(0);
-  });
-});
+  } catch (err) {
+    console.error('Fehler beim Shutdown:', err);
+    process.exit(1);
+  }
+}
+
+// Signal-Handler registrieren
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 
 // Export for testing
 module.exports = server;

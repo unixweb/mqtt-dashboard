@@ -99,10 +99,24 @@ class MqttClient {
   }
 
   disconnect() {
-    if (this.client) {
-      this.client.end();
-      this.connected = false;
-    }
+    return new Promise((resolve) => {
+      if (this.client && this.connected) {
+        // Timeout fallback: resolve after 3 seconds even if callback doesn't fire
+        const timeout = setTimeout(() => {
+          this.connected = false;
+          resolve();
+        }, 3000);
+
+        this.client.end(false, () => {
+          clearTimeout(timeout);
+          this.connected = false;
+          resolve();
+        });
+      } else {
+        this.connected = false;
+        resolve();
+      }
+    });
   }
 }
 
