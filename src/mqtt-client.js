@@ -99,10 +99,17 @@ class MqttClient {
   }
 
   disconnect() {
-    if (this.client) {
-      this.client.end();
-      this.connected = false;
-    }
+    return new Promise((resolve) => {
+      if (this.client && this.connected) {
+        this.client.end(false, () => {
+          this.connected = false;
+          resolve();
+        });
+      } else {
+        this.connected = false;
+        resolve();
+      }
+    });
   }
 }
 
