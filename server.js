@@ -141,21 +141,21 @@ async function gracefulShutdown(signal) {
   }, 5000);
 
   try {
-    // 1. HTTP Server schließen (keine neuen Verbindungen)
-    await new Promise((resolve) => {
-      server.close(() => {
-        console.log('HTTP Server geschlossen');
-        resolve();
-      });
-    });
-
-    // 2. Alle WebSocket-Verbindungen schließen
+    // 1. Alle WebSocket-Verbindungen schließen
     wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
         client.close(1000, 'Server shutdown');
       }
     });
     console.log('WebSocket Verbindungen geschlossen');
+
+    // 2. HTTP Server schließen (keine neuen Verbindungen)
+    await new Promise((resolve) => {
+      server.close(() => {
+        console.log('HTTP Server geschlossen');
+        resolve();
+      });
+    });
 
     // 3. MQTT Client disconnect
     await mqttClient.disconnect();
